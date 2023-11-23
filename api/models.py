@@ -151,6 +151,10 @@ class Products(models.Model):
         managed = False
         db_table = 'Products'
 
+    def stockfuturo(self):
+        stockfuturo = self.unitsinstock + self.unitsonorder
+        return stockfuturo
+
 
 class Region(models.Model):
     regionid = models.IntegerField(db_column='RegionID', primary_key=True)  # Field name made lowercase.

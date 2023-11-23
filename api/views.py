@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import HttpResponse, JsonResponse
 from .models import Customers, Suppliers, Categories, Products, Orders, Orderdetails, Employees
+from django.http import JsonResponse
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -28,9 +29,9 @@ def getRoutes(request):
 @api_view(["GET", "POST"])
 def getAllCustomers(request):
     if request.method == "GET":
-        customers = Customers.objects.all()
+        #customers = Customers.objects.all()
         #customers = Customers.objects.filter(contactname__startswith = 'M').order_by('contacttitle')[:3]
-        #customers = Customers.objects.filter(contacttitle = 'Owner')[3:6]
+        #customers = Customers.objects.filter(contacttitle = 'Owner')[3:6]w
         customersSerializers = CustomerSerializer(customers, many=True)
         return Response(customersSerializers.data, status=status.HTTP_200_OK)
     elif request.method == "POST":
@@ -138,9 +139,9 @@ def getCategoryById(request, pk):
 @api_view(["GET", "POST"])
 def getAllProducts(request):
     if request.method == "GET":
-        products = Products.objects.all()         
+        #products = Products.objects.all()         
         #products = Products.objects.filter(categoryid__categoryname__startswith = 'C')   
-        #products = Products.objects.filter(supplierid__companyname__startswith = 'F')[:2]
+        #products = Products.objects.filter(supplierid__companyname__startswith = 'F')}
         productSerializers = ProductSerializer(products, many=True)
         return Response(productSerializers.data, status=status.HTTP_200_OK)
     elif request.method == "POST":
@@ -149,6 +150,9 @@ def getAllProducts(request):
             productNuevo.save()
             return Response(productNuevo.data, status=status.HTTP_200_OK)
         return Response(productNuevo.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 @api_view(["GET", "PUT", "DELETE"])
 def getProductById(request, pk):
@@ -267,7 +271,7 @@ def getAllEmployees(request):
 @api_view(["GET", "PUT", "DELETE"])
 def getEmployeeById(request, pk):
     try:
-        employee = Employees.objects.get(employee_id=pk)
+        employee = Employees.objects.get(employeeid=pk)
     except Exception:
         return Response(status=status.HTTP_204_NO_CONTENT)
     
@@ -276,7 +280,7 @@ def getEmployeeById(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     if request.method == 'PUT':
-        request.data['employee_id'] = pk
+        request.data['employeeid'] = pk
         serializer = EmployeeSerializer(employee, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -342,5 +346,6 @@ def punto1(request):
     serializados = Punto1Serializer(resultados, many=True)
     return Response(serializados.data)
 
+    
 
 
